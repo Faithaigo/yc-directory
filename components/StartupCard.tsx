@@ -3,9 +3,12 @@ import { EyeIcon } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "./ui/button";
+import { Author, Startup } from "@/sanity/types";
+
+export type StartupTypeCard = Omit<Startup, "author"> & {author?:Author}
 
 interface IProps{
-    post:any
+    post:StartupTypeCard
 }
  
 const StartupCard: React.FC<IProps> = ({post}) => {
@@ -38,8 +41,8 @@ const StartupCard: React.FC<IProps> = ({post}) => {
                 <img src={post.image} alt="placeholder" className="starup-card_img"/>
             </Link>
             <div className="flex-between gap-3 mt-5">
-            <Link href={`/?query=${post.category}`}>
-                <p className="text-16-medium">{post.category}</p>
+            <Link href={`/?query=${post?.category}`}>
+                <p className="text-16-medium">{post?.category}</p>
             </Link>
             <Button className="startup-card_btn" asChild>
             <Link href={`/startup/${post._id}`}>
