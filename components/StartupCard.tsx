@@ -1,9 +1,10 @@
-import { formatDate } from "@/lib/utils";
+import {cn, formatDate} from "@/lib/utils";
 import { EyeIcon } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "./ui/button";
 import { Author, Startup } from "@/sanity/types";
+import {Skeleton} from "@/components/ui/skeleton";
 
 export type StartupTypeCard = Omit<Startup, "author"> & {author?:Author}
 
@@ -11,7 +12,7 @@ interface IProps{
     post:StartupTypeCard
 }
  
-const StartupCard: React.FC<IProps> = ({post}) => {
+const StartupCard = ({post}:IProps) => {
     return (
         <li className="startup-card group">
             <div className="flex-between">
@@ -33,7 +34,7 @@ const StartupCard: React.FC<IProps> = ({post}) => {
                     </Link>
                 </div>
                 <Link href={`/user/${post.author?._id}`}>
-                    <Image src="https://placehold.co/48X48" alt="placeholder" width={48} height={48} className="rounded-full"/>
+                    <Image src={post.author?.image!} alt={post.author?.name!} width={48} height={48} className="rounded-full"/>
                 </Link>
             </div>
             <Link href={`/startup/${post._id}`}>
@@ -53,5 +54,15 @@ const StartupCard: React.FC<IProps> = ({post}) => {
         </li>
     );
 }
+
+export const StartupCardSkeleton = () => (
+    <>
+        {[0,1,2,3,4].map((i:number)=>(
+            <li key={cn('skeleton', i)}>
+                <Skeleton className="startup-card_skeleton"/>
+            </li>
+        ))}
+    </>
+)
  
 export default StartupCard;
