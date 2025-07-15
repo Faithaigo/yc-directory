@@ -16,10 +16,12 @@ const md = markdownit()
 const Page = async ({params}: { params: Promise<{ id: string }> }) => {
     const id = (await params).id
 
-    const [post,{select:bestPitches}] = await Promise.any([
+    const [post,pitches] = await Promise.any([
         client.fetch(STARTUP_BY_ID_QUERY, {id}),
         client.fetch(PLAYLIST_BY_SLUG_QUERY,{slug:'best-pitches'})
     ])
+
+    console.log(pitches)
 
 
     if (!post) return notFound()
@@ -52,16 +54,16 @@ const Page = async ({params}: { params: Promise<{ id: string }> }) => {
             </div>
             <hr className="divider"/>
             {/* TODO: Editor Selected Startups */}
-            {bestPitches.length > 0 && (
-                <div className="max-w-4xl mx-auto">
-                    <p className="text-30-semibold">Best Pitches</p>
-                    <ul className="mt-7 card_grid-sm">
-                        {bestPitches.map((post:StartupTypeCard, index:number)=>(
-                            <StartupCard key={index} post={post}/>
-                        ))}
-                    </ul>
-                </div>
-            )}
+            {/*{bestPitches.length > 0 && (*/}
+            {/*    <div className="max-w-4xl mx-auto">*/}
+            {/*        <p className="text-30-semibold">Best Pitches</p>*/}
+            {/*        <ul className="mt-7 card_grid-sm">*/}
+            {/*            {bestPitches.map((post:StartupTypeCard, index:number)=>(*/}
+            {/*                <StartupCard key={index} post={post}/>*/}
+            {/*            ))}*/}
+            {/*        </ul>*/}
+            {/*    </div>*/}
+            {/*)}*/}
         </section>
         <Suspense fallback={<Skeleton className="view_skeleton"/>}>
             <View id={id}/>

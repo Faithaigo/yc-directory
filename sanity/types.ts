@@ -302,6 +302,31 @@ export type STARTUPS_BY_AUTHOR_QUERYResult = Array<{
   image: string | null;
   category: string | null;
 }>;
+// Variable: PLAYLIST_BY_SLUG_QUERY
+// Query: *[_type == "playlist" && slug.current == $slug[0]]{_id,title,slug,select[]->{_id,_createdAt,title,slug,author->{_id,name,slug,image,bio},views,description,category,image,pitch}}
+export type PLAYLIST_BY_SLUG_QUERYResult = Array<{
+  _id: string;
+  title: string | null;
+  slug: Slug | null;
+  select: Array<{
+    _id: string;
+    _createdAt: string;
+    title: string | null;
+    slug: Slug | null;
+    author: {
+      _id: string;
+      name: string | null;
+      slug: null;
+      image: string | null;
+      bio: string | null;
+    } | null;
+    views: number | null;
+    description: string | null;
+    category: string | null;
+    image: string | null;
+    pitch: string | null;
+  }> | null;
+}>;
 
 // Query TypeMap
 import "@sanity/client";
@@ -313,5 +338,6 @@ declare module "@sanity/client" {
     "*[_type == \"author\" && id == $id][0]{\n  _id, id, name, username, bio, image, email\n  }": AUTHOR_BY_GITHUB_ID_QUERYResult;
     "*[_type == \"author\" && _id == $id][0]{\n  _id, id, name, username, bio, image, email\n  }": AUTHOR_BY_ID_QUERYResult;
     "*[_type == \"startup\" && author._ref == $id] | order(_createdAt desc){\n  _id, title, slug, author ->{\n    _id, name, bio, image\n  },views, description, slug, _createdAt, image, category\n}": STARTUPS_BY_AUTHOR_QUERYResult;
+    "*[_type == \"playlist\" && slug.current == $slug[0]]{\n_id,\ntitle,\nslug,\nselect[]->{\n_id,\n_createdAt,\ntitle,\nslug,\nauthor->{\n_id,\nname,\nslug,\nimage,\nbio\n},\nviews,\ndescription,\ncategory,\nimage,\npitch\n}\n}": PLAYLIST_BY_SLUG_QUERYResult;
   }
 }
